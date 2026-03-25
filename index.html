@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ULTIMATE NEON DRAFT</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main-container">
+        <header>
+            <div class="draft-phase">DRAFT PHASE</div>
+            <button id="swap-btn" style="position:absolute; top:20px; right:20px; background:none; color:#aaa; border:1px solid #444; cursor:pointer;">🔄 SWAP SIDE</button>
+        </header>
+
+        <div class="draft-arena" id="arena">
+            <div id="team1-side" class="team-side orange-side">
+                <input type="text" class="team-name" value="TEAM 1">
+                <div id="t1-picks"></div>
+            </div>
+
+            <div class="pokemon-pool">
+                <div id="pokemon-grid" class="grid"></div>
+            </div>
+
+            <div id="team2-side" class="team-side purple-side">
+                <input type="text" class="team-name" value="TEAM 2">
+                <div id="t2-picks"></div>
+            </div>
+        </div>
+
+        <footer>
+            <button id="confirm-btn" class="confirm-btn">CONFIRM PICK</button>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
