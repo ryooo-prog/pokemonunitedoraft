@@ -1,10 +1,14 @@
 const SHEET_URL = 'https://docs.google.com';
 
+// セキュリティの壁を越えるための中継URL (プロキシ)
+const PROXY_URL = 'https://api.allorigins.win';
+
 async function init() {
     try {
-        console.log("スプレッドシートからデータを取得中...");
-        // ネット公開されたので、fetchが直接使えるようになります
-        const response = await fetch(SHEET_URL);
+        console.log("スプレッドシートを取得中...");
+        
+        // 【重要】ネット公開時はこの中継URLを頭につけないとブロックされます
+        const response = await fetch(PROXY_URL + encodeURIComponent(SHEET_URL));
         const csvData = await response.text();
         
         const lines = csvData.split(/\r?\n/);
@@ -12,27 +16,27 @@ async function init() {
         if(!grid) return;
         grid.innerHTML = ''; 
 
-        // 2行目から読み込み
+        // 2行目(i=1)から読み込み
         for (let i = 1; i < lines.length; i++) {
             const data = lines[i].split(',');
             if (data.length < 3) continue;
 
-            const nameJp = data[1].replace(/"/g, ''); // B列: 日本語名
-            const nameEn = data[2].replace(/"/g, '').trim(); // C列: 英語名
+            const nameJp = data.replace(/"/g, ''); // B列: 日本語名
+            const nameEn = data.replace(/"/g, '').trim(); // C列: 英語名 (大文字維持)
 
             if (!nameEn) continue;
 
             const card = document.createElement('div');
             card.className = 'pokemon-card';
             
-            // 画像URL (Unite-DB)
-            const imgId = nameEn.replace(/\s+/g, '-').replace(/[._]/g, '-').replace(/'/g, '');
+            // Unite-DBの画像ルール (大文字維持・空白をハイフンに)
+            const imgId = nameEn.replace(/\s+/g, '-').replace(/[()／/]/g, '');
             const imgUrl = `https://unite-db.com{imgId}.png`;
 
             card.innerHTML = `
                 <img src="${imgUrl}" style="width:100%; display:block;" 
                      onerror="this.src='https://via.placeholder.com{nameJp}'">
-                <div style="font-size:9px; text-align:center; color:#ccc;">${nameJp}</div>
+                <div style="font-size:9px; text-align:center; color:#ccc; background:rgba(0,0,0,0.5);">${nameJp}</div>
             `;
 
             // 【画像再現】クリックでオレンジ爆発エフェクト
