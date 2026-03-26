@@ -26,7 +26,7 @@ async function init() {
             card.className = 'pokemon-card';
             
             // 画像URL (Unite-DB)
-            const imgId = nameEn.toLowerCase().replace(/\s+/g, '-').replace(/[._]/g, '-').replace(/'/g, '');
+            const imgId = nameEn.replace(/\s+/g, '-').replace(/[._]/g, '-').replace(/'/g, '');
             const imgUrl = `https://unite-db.com{imgId}.png`;
 
             card.innerHTML = `
